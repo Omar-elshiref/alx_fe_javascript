@@ -11,7 +11,7 @@ newQuote.addEventListener("click", function showRandomQuote(e) {
     let randomObject = getRandomObject(quotesToObject);
     let randomText = randomObject.text;
     let randomCategory = randomObject.category;
-    quoteDisplay.textContent = `Quote: ${randomText} Category: ${randomCategory}`;
+    quoteDisplay.innerHTML = `Quote: ${randomText} Category: ${randomCategory}`;
   }
 });
 

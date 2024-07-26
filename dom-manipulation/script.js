@@ -24,6 +24,8 @@ const newQuote = document.getElementById("newQuote");
 const newQuoteText = document.getElementById("newQuoteText");
 const newQuoteCategory = document.getElementById("newQuoteCategory");
 const ExportQuotes = document.getElementById("ExportQuotes");
+const importFile = document.getElementById("importFile");
+
 
 
 newQuote.addEventListener("click", function showRandomQuote(e) {
@@ -81,12 +83,6 @@ ExportQuotes.addEventListener("click", function createAndDownloadFile(e) {
   }
 });
 
-let input3 = document.createElement("input");
-input3.setAttribute("id", "importFile");
-input3.setAttribute("type", "file");
-input3.setAttribute("accept", ".json");
-input3.setAttribute("onchange", "importFromJsonFile(event)");
-document.body.appendChild(input3);
 
 function importFromJsonFile(event) {
   const fileReader = new FileReader();

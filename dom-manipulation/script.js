@@ -23,6 +23,8 @@ const newQuote = document.getElementById("newQuote");
 
 const newQuoteText = document.getElementById("newQuoteText");
 const newQuoteCategory = document.getElementById("newQuoteCategory");
+const ExportQuotes = document.getElementById("ExportQuotes");
+
 
 newQuote.addEventListener("click", function showRandomQuote(e) {
   e.preventDefault();
@@ -61,11 +63,8 @@ function getRandomObject(arr) {
   return arr[randomIndex];
 }
 
-let btn3 = document.createElement("button");
-btn3.innerHTML = "Export quotes";
-document.body.appendChild(btn3);
 
-btn3.addEventListener("click", function createAndDownloadFile(e) {
+ExportQuotes.addEventListener("click", function createAndDownloadFile(e) {
   e.preventDefault();
   if (localStorage.getItem("quotes")) {
     let quotesToJSONExport = localStorage.getItem("quotes");

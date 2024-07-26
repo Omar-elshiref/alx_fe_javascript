@@ -1,3 +1,11 @@
+const quoteDisplay = document.getElementById("quoteDisplay");
+const newQuote = document.getElementById("newQuote");
+const newQuoteText = document.getElementById("newQuoteText");
+const newQuoteCategory = document.getElementById("newQuoteCategory");
+const ExportQuotes = document.getElementById("ExportQuotes");
+const importFile = document.getElementById("importFile");
+const categoryFilter = document.getElementById("categoryFilter");
+
 function createAddQuoteForm() {
   let div = document.createElement("div");
   let input1 = document.createElement("input");
@@ -18,19 +26,9 @@ function createAddQuoteForm() {
 }
 createAddQuoteForm();
 
-const quoteDisplay = document.getElementById("quoteDisplay");
-const newQuote = document.getElementById("newQuote");
-
-const newQuoteText = document.getElementById("newQuoteText");
-const newQuoteCategory = document.getElementById("newQuoteCategory");
-const ExportQuotes = document.getElementById("ExportQuotes");
-const importFile = document.getElementById("importFile");
-
-
-
 newQuote.addEventListener("click", function showRandomQuote(e) {
   e.preventDefault();
-  if (localStorage.getItem("quotes")) {
+  if (localStorage.getItem("quotes orginal")) {
     let quotesToObject = JSON.parse(localStorage.getItem("quotes") || "[]");
     let randomObject = getRandomObject(quotesToObject);
     let randomText = randomObject.text;
@@ -48,9 +46,9 @@ function addQuote() {
       category: newQuoteCategory.value,
     };
 
-    let quotes = JSON.parse(localStorage.getItem("quotes") || "[]");
+    let quotes = JSON.parse(localStorage.getItem("quotes orginal") || "[]");
     quotes.push(quoteObj);
-    localStorage.setItem("quotes", JSON.stringify(quotes));
+    localStorage.setItem("quotes orginal", JSON.stringify(quotes));
     console.log(quotes);
 
     newQuoteText.value = "";
@@ -64,7 +62,6 @@ function getRandomObject(arr) {
   let randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
-
 
 ExportQuotes.addEventListener("click", function createAndDownloadFile(e) {
   e.preventDefault();
@@ -83,14 +80,43 @@ ExportQuotes.addEventListener("click", function createAndDownloadFile(e) {
   }
 });
 
-
 function importFromJsonFile(event) {
   const fileReader = new FileReader();
   fileReader.onload = function (event) {
     const importedQuotes = JSON.parse(event.target.result);
     // quotes.push(...importedQuotes);
+    localStorage.setItem("quotes orginal", `${importedQuotes}`);
     localStorage.setItem("quotes", `${importedQuotes}`);
     alert("Quotes imported successfully!");
   };
   fileReader.readAsText(event.target.files[0]);
+}
+
+function filterQuotes(event) {
+  localStorage.setItem("selectedCategory", event.target.value);
+
+  if (localStorage.getItem("quotes orginal")) {
+    let quotesAll = localStorage.getItem("quotes orginal");
+    let quotesObj = JSON.parse(quotesAll);
+    if (event.target.value === "all") {
+      let quotesText2 = JSON.stringify(quotesObj);
+      localStorage.setItem("quotes", `${quotesText2}`);
+    } else {
+      const filteredObjects = quotesObj.filter(
+        (obj) => obj.category == event.target.value
+      );
+      let quotesText1 = JSON.stringify(filteredObjects);
+      localStorage.setItem("quotes", `${quotesText1}`);
+      let quotesToObject1 = JSON.parse(localStorage.getItem("quotes") || "[]");
+      let randomObject1 = getRandomObject(quotesToObject1);
+      let randomText1 = randomObject1.text;
+      let randomCategory1 = randomObject1.category;
+      quoteDisplay.innerHTML = `Quote: ${randomText1} Category: ${randomCategory1}`;
+    }
+  }
+}
+
+const savedCategory = localStorage.getItem("selectedCategory");
+if (savedCategory) {
+  categoryFilter.value = savedCategory;
 }

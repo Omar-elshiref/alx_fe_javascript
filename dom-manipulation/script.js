@@ -1,11 +1,3 @@
-const quoteDisplay = document.getElementById("quoteDisplay");
-const newQuote = document.getElementById("newQuote");
-const newQuoteText = document.getElementById("newQuoteText");
-const newQuoteCategory = document.getElementById("newQuoteCategory");
-const ExportQuotes = document.getElementById("ExportQuotes");
-const importFile = document.getElementById("importFile");
-const categoryFilter = document.getElementById("categoryFilter");
-
 function createAddQuoteForm() {
   let div = document.createElement("div");
   let input1 = document.createElement("input");
@@ -26,6 +18,15 @@ function createAddQuoteForm() {
 }
 createAddQuoteForm();
 
+const quoteDisplay = document.getElementById("quoteDisplay");
+const newQuote = document.getElementById("newQuote");
+const newQuoteText = document.getElementById("newQuoteText");
+const newQuoteCategory = document.getElementById("newQuoteCategory");
+const ExportQuotes = document.getElementById("ExportQuotes");
+const importFile = document.getElementById("importFile");
+const categoryFilter = document.getElementById("categoryFilter");
+
+
 newQuote.addEventListener("click", function showRandomQuote(e) {
   e.preventDefault();
   if (localStorage.getItem("quotes orginal")) {
@@ -40,7 +41,7 @@ newQuote.addEventListener("click", function showRandomQuote(e) {
 });
 
 function addQuote() {
-  if (newQuoteText.value !== "" && newQuoteCategory !== "") {
+  if (newQuoteText.value !== "" && newQuoteCategory.value !== "") {
     let quoteObj = {
       text: newQuoteText.value,
       category: newQuoteCategory.value,
@@ -102,10 +103,15 @@ function filterQuotes(event) {
       let quotesText2 = JSON.stringify(quotesObj);
       localStorage.setItem("quotes", `${quotesText2}`);
     } else {
-      const filteredObjects = quotesObj.filter(
-        (obj) => obj.category == event.target.value
-      );
-      let quotesText1 = JSON.stringify(filteredObjects);
+      // const filteredObjects = quotesObj.filter(
+      //   (obj) => obj.category == event.target.value
+      // );
+      let populateCategories = quotesObj.map( (obj) => {        
+          return obj.category === event.target.value ? obj : null;
+    }).filter(obj => obj !== null);;
+    console.log(populateCategories)
+
+      let quotesText1 = JSON.stringify(populateCategories);
       localStorage.setItem("quotes", `${quotesText1}`);
       let quotesToObject1 = JSON.parse(localStorage.getItem("quotes") || "[]");
       let randomObject1 = getRandomObject(quotesToObject1);

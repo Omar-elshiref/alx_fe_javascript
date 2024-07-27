@@ -56,6 +56,7 @@ function addQuote() {
     option.setAttribute("value", `${newQuoteCategory.value}`)
     option.textContent = `${newQuoteCategory.value}`
     // categoryFilter.appendChild(option)
+    postQuoteToServer(quoteObj);
 
     newQuoteText.value = "";
     newQuoteCategory.value = "";
@@ -134,12 +135,7 @@ if (savedCategory) {
 
 async function fetchQuotesFromServer() {
   try {
-    let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: "POST",
-      headers: {
-        "Content-Type": 'application/json; charset=UTF-8',
-      },
-    });
+    let response = await fetch('https://jsonplaceholder.typicode.com/posts');
     let serverQuotes = await response.json();
     let localQuotes = JSON.parse(localStorage.getItem("quotes orginal") || "[]");
 
@@ -161,4 +157,29 @@ async function fetchQuotesFromServer() {
   }
 }
 
-setInterval(fetchQuotesFromServer, 100000)
+
+// إرسال اقتباس جديد إلى الخادم
+async function postQuoteToServer(quote) {
+  try {
+    let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify(quote)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to post quote');
+    }
+  } catch (error) {
+    console.error("Error posting quote to server:", error);
+  }
+}
+
+async function syncQuotes() {
+  await fetchQuotesFromServer();
+  setInterval(fetchQuotesFromServer, 60000); 
+}
+
+// بدء مزامنة البيانات عند تحميل الصفحة
+syncQuotes();

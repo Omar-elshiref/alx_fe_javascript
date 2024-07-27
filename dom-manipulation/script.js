@@ -52,8 +52,14 @@ function addQuote() {
     localStorage.setItem("quotes orginal", JSON.stringify(quotes));
     console.log(quotes);
 
+    let option = document.createElement("option");
+    option.setAttribute("value", `${newQuoteCategory.value}`)
+    option.textContent = `${newQuoteCategory.value}`
+    // categoryFilter.appendChild(option)
+
     newQuoteText.value = "";
     newQuoteCategory.value = "";
+
   } else {
     alert("Please fill in both fields.");
   }
@@ -103,14 +109,12 @@ function filterQuotes(event) {
       let quotesText2 = JSON.stringify(quotesObj);
       localStorage.setItem("quotes", `${quotesText2}`);
     } else {
-      const populateCategories = quotesObj.filter(
-        (obj) => obj.category == event.target.value
-      );
-    //   let populateCategories = quotesObj.map( (obj) => {        
-    //       return obj.category === event.target.value ? obj : null;
-    // }).filter(obj => obj !== null);;
-    console.log(populateCategories)
-
+      // const populateCategories = quotesObj.filter(
+      //   (obj) => obj.category == event.target.value
+      // );
+      let populateCategories = quotesObj.map( (obj) => {        
+          return obj.category === event.target.value ? obj : null;
+    }).filter(obj => obj !== null);;
       let quotesText1 = JSON.stringify(populateCategories);
       localStorage.setItem("quotes", `${quotesText1}`);
       let quotesToObject1 = JSON.parse(localStorage.getItem("quotes") || "[]");

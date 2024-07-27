@@ -137,7 +137,7 @@ async function fetchQuotesFromServer() {
     let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
       method: "POST",
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
+        "Content-Type": 'application/json; charset=UTF-8',
       },
     });
     let serverQuotes = await response.json();

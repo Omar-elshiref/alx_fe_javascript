@@ -55,7 +55,7 @@ function addQuote() {
     let option = document.createElement("option");
     option.setAttribute("value", `${newQuoteCategory.value}`)
     option.textContent = `${newQuoteCategory.value}`
-    // categoryFilter.appendChild(option)
+    categoryFilter.appendChild(option)
     postQuoteToServer(quoteObj);
 
     newQuoteText.value = "";
@@ -158,7 +158,6 @@ async function fetchQuotesFromServer() {
 }
 
 
-// إرسال اقتباس جديد إلى الخادم
 async function postQuoteToServer(quote) {
   try {
     let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -181,5 +180,4 @@ async function syncQuotes() {
   setInterval(fetchQuotesFromServer, 60000); 
 }
 
-// بدء مزامنة البيانات عند تحميل الصفحة
 syncQuotes();

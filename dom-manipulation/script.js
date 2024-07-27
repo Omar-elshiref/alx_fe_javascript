@@ -151,7 +151,7 @@ async function fetchQuotesFromServer() {
     });
 
     localStorage.setItem("quotes orginal", JSON.stringify(localQuotes));
-    alert("Data synced with server.")
+    alert("Quotes synced with server!")
   } catch (error) {
     console.error("Error fetching quotes from server:", error);
   }

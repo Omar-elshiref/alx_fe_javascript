@@ -103,12 +103,12 @@ function filterQuotes(event) {
       let quotesText2 = JSON.stringify(quotesObj);
       localStorage.setItem("quotes", `${quotesText2}`);
     } else {
-      // const filteredObjects = quotesObj.filter(
-      //   (obj) => obj.category == event.target.value
-      // );
-      let populateCategories = quotesObj.map( (obj) => {        
-          return obj.category === event.target.value ? obj : null;
-    }).filter(obj => obj !== null);;
+      const populateCategories = quotesObj.filter(
+        (obj) => obj.category == event.target.value
+      );
+    //   let populateCategories = quotesObj.map( (obj) => {        
+    //       return obj.category === event.target.value ? obj : null;
+    // }).filter(obj => obj !== null);;
     console.log(populateCategories)
 
       let quotesText1 = JSON.stringify(populateCategories);

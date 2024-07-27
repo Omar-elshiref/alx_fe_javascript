@@ -134,7 +134,12 @@ if (savedCategory) {
 
 async function fetchQuotesFromServer() {
   try {
-    let response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    let response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
     let serverQuotes = await response.json();
     let localQuotes = JSON.parse(localStorage.getItem("quotes orginal") || "[]");
 

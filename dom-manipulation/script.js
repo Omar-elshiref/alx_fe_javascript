@@ -130,3 +130,30 @@ const savedCategory = localStorage.getItem("selectedCategory");
 if (savedCategory) {
   categoryFilter.value = savedCategory;
 }
+
+
+async function fetchQuotesFromServer() {
+  try {
+    let response = await fetch('https://jsonplaceholder.typicode.com/posts');
+    let serverQuotes = await response.json();
+    let localQuotes = JSON.parse(localStorage.getItem("quotes orginal") || "[]");
+
+    localQuotes = localQuotes.map(localQuote => {
+      let matchingServerQuote = serverQuotes.find(serverQuote => serverQuote.id === localQuote.id);
+      return matchingServerQuote ? matchingServerQuote : localQuote;
+    });
+
+    serverQuotes.forEach(serverQuote => {
+      if (!localQuotes.find(localQuote => localQuote.id === serverQuote.id)) {
+        localQuotes.push(serverQuote);
+      }
+    });
+
+    localStorage.setItem("quotes orginal", JSON.stringify(localQuotes));
+    alert("Data synced with server.")
+  } catch (error) {
+    console.error("Error fetching quotes from server:", error);
+  }
+}
+
+setInterval(fetchQuotesFromServer, 100000)
